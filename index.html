@@ -116,6 +116,74 @@
             font-size: 1.05rem;
         }
 
+        /* 소개 */
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .profile-pic {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: rgba(15, 23, 42, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            flex-shrink: 0;
+            border: 3px solid var(--accent-color);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            overflow: hidden;
+        }
+
+        /* 프로필 사진을 이미지로 넣을 때 사용 */
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex-grow: 1;
+        }
+
+        .profile-info h3 {
+            font-size: 1.4rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .profile-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .profile-link-btn {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .profile-link-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            border-color: var(--accent-color);
+        }
+        /* ================================== */
+
         /* 게임 개요 메타 정보 */
         .meta-grid {
             display: grid;
@@ -309,6 +377,14 @@
                 padding: 10px 12px;
                 font-size: 0.95rem;
             }
+            /* 자기소개 모바일 반응형 */
+            .profile-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-links {
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -316,14 +392,39 @@
 
     <div class="container">
         
-        <!-- 헤더 섹션 -->
         <header>
             <div class="badge">게임 개발 프로젝트</div>
             <h1>포커 포지 (Poker Forge)</h1>
             <p class="tagline">포커를 자신만의 방법으로 제련하세요.</p>
         </header>
 
-        <!-- 1. 게임 소개 -->
+        <section id="about-me">
+            <h2>About Me</h2>
+            <div class="profile-container">
+                <div class="profile-pic">
+                    👾
+                </div>
+                <div class="profile-info">
+                    <h3>gyungminkwon</h3>
+                    <p>안녕하세요. 잘 부탁드립니다.</p>
+                    <p>✨ <strong>스택:</strong> Python, C</p>
+                    <p>🌱 <strong>공부 중:</strong> LINUX, RISC-V, SQL, Java, C# Unity, Renpy</p>
+                    
+                    <div class="profile-links">
+                        <a href="https://github.com/gyungminkwon" target="_blank" class="profile-link-btn">
+                            💻 GitHub
+                        </a>
+                        <a href="https://gmkeen.itch.io/" target="_blank" class="profile-link-btn">
+                            🎮 Itch.io
+                        </a>
+                        <a href="mailto:ufks7010031@knu.ac.kr" class="profile-link-btn">
+                            ✉️ Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="introduction">
             <h2>게임 소개 (Overview)</h2>
             <p>포커 족보로 카드를 만들어 보드 위에서 적과 싸우는, 로그라이크 덱빌딩 게임.</p>
@@ -349,7 +450,6 @@
             </div>
         </section>
 
-        <!-- 2. 게임 스크린샷 / 미디어 -->
         <section id="media">
             <h2>게임 플레이 (How to Play)</h2>
             <p>https://gmkeen.itch.io/poker-forge</p>
@@ -366,7 +466,6 @@
             </div>
         </section>
 
-        <!-- 3. 핵심 시스템 및 플레이 방식 -->
         <section id="features">
             <h2>주요 특징 및 시스템 (Key Features)</h2>
             <p>게임 내에 구현된 핵심 시스템을 정리한 항목입니다.</p>
@@ -377,7 +476,6 @@
             </ul>
         </section>
 
-        <!-- 4. 사용 기술 및 도구 -->
         <section id="tech-stack">
             <h2>기술 스택 및 개발 환경 (Tech Stack)</h2>
             <p>프로젝트를 구현하는 데 사용된 프레임워크, 프로그래밍 언어, 생산성 도구 목록입니다.</p>
@@ -414,7 +512,6 @@
             </table>
         </section>
 
-        <!-- 5. 제작 과정 -->
         <section id="development-process">
             <h2>제작 과정 (Development Journey)</h2>
             <p>아이디어 빌딩 단계부터 최종 빌드 파일 공유에 이르기까지의 타임라인입니다.</p>
@@ -443,7 +540,6 @@
             </div>
         </section>
 
-        <!-- 6. 트러블슈팅 및 느낀 점 -->
         <section id="troubleshooting">
             <h2>문제 해결 및 회고 (Troubleshooting & Retrospective)</h2>
             <p>개발 과정에서 마주했던 기술적 한계와 이를 극복해 낸 경험은 포트폴리오에서 가장 가치 있는 자산입니다.</p>
@@ -457,7 +553,6 @@
             <p style="margin-top: 24px;"><strong>프로젝트를 마치며:</strong> 게임 개발자는 어떤 동력으로 살아가는가를 체험할 수 있었던 계기.</p>
         </section>
 
-        <!-- 푸터 섹션 -->
         <footer>
             <p>© 2026 gyungminkwon. All rights reserved.</p>
             <p>Designed for <a href="https://github.com/gyungminkwon" target="_blank">GitHub Pages</a></p>
