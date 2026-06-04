@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Forge 제작 과정</title>
+    <style>
+        /* 기본 스타일 및 테마 설정 */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --accent-hover: #7dd3fc;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --success-color: #34d399;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 헤더 / 히어로 섹션 */
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            border-bottom: 1px solid var(--border-color);
+            border-radius: 16px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--accent-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -0.05em;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        header p.tagline {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 메인 콘텐츠 구조 */
+        section {
+            margin-bottom: 50px;
+            background-color: var(--card-bg);
+            padding: 35px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 12px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 1.05rem;
+        }
+
+        /* 게임 개요 메타 정보 */
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+            background-color: rgba(15, 23, 42, 0.6);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .meta-item font-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .meta-item font-value {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* 주요 특징 스타일 */
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 14px;
+            color: var(--text-secondary);
+        }
+
+        .features-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .features-list li strong {
+            color: #ffffff;
+        }
+
+        /* 기술 스택 테이블 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: rgba(15, 23, 42, 0.4);
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        td strong {
+            color: var(--text-primary);
+        }
+
+        /* 미디어 플레이스홀더 (스크린샷 영역) */
+        .media-placeholder {
+            background-color: rgba(15, 23, 42, 0.8);
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .media-placeholder p {
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .media-placeholder .icon {
+            font-size: 2.5rem;
+            color: var(--border-color);
+        }
+
+        /* 제작 과정 타임라인 */
+        .timeline {
+            position: relative;
+            border-left: 2px solid var(--border-color);
+            padding-left: 24px;
+            margin-left: 10px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -31px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            border: 3px solid var(--card-bg);
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .timeline-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        /* 트러블슈팅/회고 강조 상자 */
+        .callout {
+            background: linear-gradient(to right, rgba(239, 68, 68, 0.1), transparent);
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+        }
+
+        .callout-title {
+            font-weight: 600;
+            color: #fca5a5;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--accent-color);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 반응형 대응 */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            section {
+                padding: 20px;
+            }
+            th, td {
+                padding: 10px 12px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- 헤더 섹션 -->
+        <header>
+            <div class="badge">개발 프로젝트</div>
+            <h1>Poker Forge</h1>
+            <p class="tagline">소개합니다.</p>
+        </header>
+
+        <!-- 1. 게임 소개 -->
+        <section id="introduction">
+            <h2>게임 소개 (Overview)</h2>
+            <p>포커 족보로 카드를 만들어, 보드 위에서 적과 싸우는, 로그라이크 덱빌딩 게임</p>
+            <p>매 턴 주어지는 카드로 포커 족보를 만들어 보드 위에서 싸우고, 먼저 상대의 체력을 0으로 만드세요.</p>
+            
+            <div class="meta-grid">
+                <div class="meta-item">
+                    <span class="font-title">장르</span>
+                    <span class="font-value">카드</span>
+                </div>
+                <div class="meta-item">
+                    <span class="font-title">개발 기간</span>
+                    <span class="font-value">2026.05.14 ~ 2026.05.27</span>
+                </div>
+                <div class="meta-item">
+                    <span class="font-title">플랫폼</span>
+                    <span class="font-value">PC(Windows) / Web</span>
+                </div>
+                <div class="meta-item">
+                    <span class="font-title">개발 인원</span>
+                    <span class="font-value">1인</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 게임 스크린샷 / 미디어 -->
+        <section id="media">
+            <h2>게임 플레이 화면 (Screenshots)</h2>
+            <p>아래 참조</p>
+            
+            <div class="media-placeholder">
+                <div class="icon">🖼️</div>
+                <p><strong>[게임 이미지]</strong></p>
+                <p style="font-size: 0.85rem;">준비 중</p>
+            </div>
+        </section>
+
+        <!-- 3. 핵심 시스템 및 플레이 방식 -->
+        <section id="features">
+            <h2>주요 특징 및 시스템 (Key Features)</h2>
+            <p>게임 내에 구현된 핵심 시스템을 정리한 항목입니다.</p>
+            <ul class="features-list">
+                <li><strong>1:</strong> -</li>
+                <li><strong>2:</strong> -</li>
+                <li><strong>3:</strong> -</li>
+            </ul>
+        </section>
+
+        <!-- 4. 사용 기술 및 도구 -->
+        <section id="tech-stack">
+            <h2>기술 스택 및 개발 환경 (Tech Stack)</h2>
+            <p>프로젝트를 구현하는 데 사용된 프레임워크, 프로그래밍 언어, 생산성 도구 목록입니다.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>분류</th>
+                        <th>사용 기술 / 도구</th>
+                        <th>설명 및 활용 목적</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Engine / Library</strong></td>
+                        <td>Unity 2D</td>
+                        <td>게임 로직 구현, 그래픽 렌더링, 이벤트 루프 처리</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Language</strong></td>
+                        <td>C#</td>
+                        <td>AI</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Graphics / Audio</strong></td>
+                        <td>Figma / Kenny</td>
+                        <td>게임에 필요한 UI 소스 제작 및 카드 이미지, 사운드</td>
+                    </tr>
+                    <tr>
+                        <td><strong>VCS</strong></td>
+                        <td>Git / GitHub</td>
+                        <td>사용하지 않음</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- 5. 제작 과정 -->
+        <section id="development-process">
+            <h2>제작 과정 (Development Journey)</h2>
+            <p>아이디어 빌딩 단계부터 최종 빌드 파일 공유에 이르기까지의 타임라인입니다.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Phase 1</div>
+                    <div class="timeline-title">기획 및 프로토타이핑 (Concept & Prototyping)</div>
+                    <p>재미있는 아이디어를 문서화하고, 핵심 플레이 메커니즘이 실제로 작동하는지 빠르게 프로토타입 코드를 작성해 검증했습니다.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Phase 2</div>
+                    <div class="timeline-title">본격 개발 및 에셋 합성 (Core Development)</div>
+                    <p>판정, 시스템, 게임 상태 관리(메뉴-플레이-게임오버) 등 핵심 클래스와 함수 구조를 설계하고 그래픽 소스를 결합했습니다.</p>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-date">Phase 3</div>
+                    <div class="timeline-title">폴리싱 및 버그 수정 (Polishing & Testing)</div>
+                    <p>반복적인 플레이 테스트를 통해 밸런스를 조정하고, 예외 처리 코드를 추가하여 안정성을 높였습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 트러블슈팅 및 느낀 점 -->
+        <section id="troubleshooting">
+            <h2>문제 해결 및 회고 (Troubleshooting & Retrospective)</h2>
+            <p>개발 과정에서 마주했던 기술적 한계와 이를 극복해 낸 경험은 포트폴리오에서 가장 가치 있는 자산입니다.</p>
+            
+            <div class="callout">
+                <div class="callout-title">직면했던 문제: 캔버스 분할</div>
+                <p>캔버스 하나에서 모든 일을 다 처리하지 맙시다.</p>
+                <p><strong>해결 방법:</strong> 추후 서술.</p>
+            </div>
+            
+            <p style="margin-top: 24px;"><strong>프로젝트를 마치며:</strong> 게임 개발자는 어떤 동력으로 살아가는가를 체험할 수 있었던 계기.</p>
+        </section>
+
+        <!-- 푸터 섹션 -->
+        <footer>
+            <p>© 2026 gyungminkwon. All rights reserved.</p>
+            <p>Designed for <a href="https://github.com/gyungminkwon" target="_blank">GitHub Pages</a></p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
