@@ -138,7 +138,6 @@
             overflow: hidden;
         }
 
-        /* 프로필 사진을 이미지로 넣을 때 사용 */
         .profile-pic img {
             width: 100%;
             height: 100%;
@@ -182,7 +181,6 @@
             color: var(--bg-color);
             border-color: var(--accent-color);
         }
-        /* ================================== */
 
         /* 게임 개요 메타 정보 */
         .meta-grid {
@@ -262,29 +260,27 @@
             color: var(--text-primary);
         }
 
-        /* 미디어 플레이스홀더 (스크린샷 영역) */
-        .media-placeholder {
-            background-color: rgba(15, 23, 42, 0.8);
-            border: 2px dashed var(--border-color);
+        /* 유튜브 동영상 반응형 컨테이너 */
+        .video-container {
+            position: relative;
+            width: 100%;
+            /* 16:9 비율 유지 */
+            aspect-ratio: 16 / 9; 
+            margin-top: 24px;
             border-radius: 8px;
-            height: 350px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-secondary);
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
+            overflow: hidden; /* 모서리 둥글게 적용하기 위함 */
+            border: 1px solid var(--border-color);
+            background-color: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .media-placeholder p {
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        .media-placeholder .icon {
-            font-size: 2.5rem;
-            color: var(--border-color);
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         /* 제작 과정 타임라인 */
@@ -377,7 +373,6 @@
                 padding: 10px 12px;
                 font-size: 0.95rem;
             }
-            /* 자기소개 모바일 반응형 */
             .profile-container {
                 flex-direction: column;
                 text-align: center;
@@ -428,7 +423,7 @@
         <section id="introduction">
             <h2>게임 소개 (Overview)</h2>
             <p>포커 족보로 카드를 만들어 보드 위에서 적과 싸우는, 로그라이크 덱빌딩 게임.</p>
-            <p>매 턴 주어지는 카드로 포커 족보를 만들어 보드 위에서 싸우고, 먼저 상대의 체력을 0으로 만드세요.</p>
+            <p>매 턴 발생하는 전투에서 우위를 점하고, 먼저 상대의 체력을 0으로 만드세요.</p>
             
             <div class="meta-grid">
                 <div class="meta-item">
@@ -452,17 +447,22 @@
 
         <section id="media">
             <h2>게임 플레이 (How to Play)</h2>
-            <p>https://gmkeen.itch.io/poker-forge</p>
+            <a href="https://gmkeen.itch.io/poker-forge" target="_blank" rel="noopener noreferrer">itch.io/poker-forge</a>
+            <p></p>
             <ul class="features-list">
                 <li><strong>먼저,</strong> 위 링크를 눌러 페이지로 이동하세요. 두 가지 방식을 통해 플레이할 수 있습니다.</li>
                 <li><strong>1. 다운로드 방식:</strong> [다운로드] 항목에서 zip 파일을 설치하고 압축을 풉니다. 그중 Poker Forge라고 쓰인 exe 파일을 실행하세요.</li>
                 <li><strong>2. 웹 방식:</strong> [4. 웹 버전]에 적힌 링크로 이동한 후, 코드 [gmkeen]을 입력합니다. 화면 비율을 조정한 뒤 플레이하세요.</li>
             </ul>
             
-            <div class="media-placeholder">
-                <div class="icon">🖼️</div>
-                <p><strong>[게임 이미지 또는 영상]</strong></p>
-                <p style="font-size: 0.85rem;">준비 중</p>
+            <div class="video-container">
+                <iframe
+                    src="https://www.youtube-nocookie.com/embed/63DFw6pwL7I"
+                    title="Poker Forge Gameplay Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
             </div>
         </section>
 
@@ -470,9 +470,12 @@
             <h2>주요 특징 및 시스템 (Key Features)</h2>
             <p>게임 내에 구현된 핵심 시스템을 정리한 항목입니다.</p>
             <ul class="features-list">
-                <li><strong>1:</strong> -</li>
-                <li><strong>2:</strong> -</li>
-                <li><strong>3:</strong> -</li>
+                <li><strong>포커 족보:</strong> 포커의 규칙을 이용해 확률에 기반한 다양한 전략을 창출합니다.</li>
+                <li><strong>성장 요소:</strong> 덱에서 카드를 지우거나 늘리는 '덱 변화',
+                    카드 자체를 강화하는 '코팅',
+                    족보의 파워를 높이는 '레벨 업',
+                    (추후) 보드에 배치된 필드 카드에 특수 능력을 부여하는 '도장',
+                    (추후) 시스템적으로 플레이어에게 어드밴티지를 제공하는 '특전'으로 당신만의 개성을 만드세요.</li>
             </ul>
         </section>
 
@@ -484,29 +487,24 @@
                     <tr>
                         <th>분류</th>
                         <th>사용 기술 / 도구</th>
-                        <th>설명 및 활용 목적</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Engine / Library</strong></td>
+                        <td><strong>Engine</strong></td>
                         <td>Unity 2D</td>
-                        <td>게임 로직 구현, 그래픽 렌더링, 이벤트 루프 처리</td>
                     </tr>
                     <tr>
                         <td><strong>Language</strong></td>
                         <td>C#</td>
-                        <td>AI</td>
                     </tr>
                     <tr>
                         <td><strong>Graphics / Audio</strong></td>
-                        <td>Figma / Kenney</td>
-                        <td>게임에 필요한 UI 소스 제작 및 카드 이미지, 사운드</td>
+                        <td>Figma / Kenney(CC0)</td>
                     </tr>
                     <tr>
                         <td><strong>VCS</strong></td>
                         <td>Git / GitHub</td>
-                        <td>사용하지 않음</td>
                     </tr>
                 </tbody>
             </table>
@@ -521,21 +519,21 @@
                     <div class="timeline-dot"></div>
                     <div class="timeline-date">Phase 1</div>
                     <div class="timeline-title">기획 및 프로토타이핑 (Concept & Prototyping)</div>
-                    <p>재미있는 아이디어를 문서화하고, 핵심 플레이 메커니즘이 실제로 작동하는지 빠르게 프로토타입 코드를 작성해 검증했습니다.</p>
+                    <p>재미있는 아이디어를 추려내 구체화하고, 이를 기획 문서로 정리한 뒤, 구현 목록을 리스트로 정리했습니다.</p>
                 </div>
                 
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
                     <div class="timeline-date">Phase 2</div>
                     <div class="timeline-title">본격 개발 및 에셋 합성 (Core Development)</div>
-                    <p>판정, 시스템, 게임 상태 관리(메뉴-플레이-게임오버) 등 핵심 클래스와 함수 구조를 설계하고 그래픽 소스를 결합했습니다.</p>
+                    <p>판정, 시스템, 게임 상태 관리 등 핵심 클래스와 함수 구조를 설계하고, 그래픽 소스를 결합했습니다.</p>
                 </div>
                 
                 <div class="timeline-item">
                     <div class="timeline-dot"></div>
                     <div class="timeline-date">Phase 3</div>
                     <div class="timeline-title">폴리싱 및 버그 수정 (Polishing & Testing)</div>
-                    <p>반복적인 플레이 테스트를 통해 밸런스를 조정하고, 예외 처리 코드를 추가하여 안정성을 높였습니다.</p>
+                    <p>애니메이션 효과를 부여하고, UI/UX을 개선한 후, 반복적인 플레이 테스트를 통해 안정성을 높였습니다.</p>
                 </div>
             </div>
         </section>
@@ -545,12 +543,32 @@
             <p>개발 과정에서 마주했던 기술적 한계와 이를 극복해 낸 경험은 포트폴리오에서 가장 가치 있는 자산입니다.</p>
             
             <div class="callout">
-                <div class="callout-title">직면했던 문제: 캔버스 분할</div>
-                <p>캔버스 하나에서 모든 일을 다 처리하지 맙시다.</p>
-                <p><strong>해결 방법:</strong> 추후 서술.</p>
+                <div class="callout-title">문제 1: 해상도 비율</div>
+                <p>게임 뷰를 가변 해상도로 놓고 전체 화면을 했더니 비율이 제대로 망가지는 문제가 발생했습니다.</p>
+                <p><strong>해결 방법:</strong> 캔버스 크기를 1920*1080(16:9)으로 바꾼 뒤,
+                    내부 오브젝트 배치와 비율을 손수 수정할 수밖에 없었습니다.
+                    중간 단계에서 수정할 수 있어서 다행이었습니다. </p>
+            </div>
+
+            <div class="callout">
+                <div class="callout-title">문제 2: 포스트 프로세싱</div>
+                <p>메인 카메라에 포스트 프로세싱을 적용해도 아무런 변화가 없던 문제가 있었습니다.
+                    메인 카메라 위치와 캔버스 렌더러 모드가 꼬이면서 게임 뷰에 영향을 미치지 못한 것인데요.
+                    단일 캔버스 안에 모든 걸 박았더니 대처가 곤란했습니다.</p>
+                <p><strong>해결 방법:</strong> 뒤늦게라도 캔버스를 늘려 듀얼 캔버스로 수정하고,
+                    일일이 캔버스 내부 오브젝트의 비율을 조정했습니다.</p>
             </div>
             
-            <p style="margin-top: 24px;"><strong>프로젝트를 마치며:</strong> 게임 개발자는 어떤 동력으로 살아가는가를 체험할 수 있었던 계기.</p>
+            <p style="margin-top: 24px;"><strong>프로젝트를 마치며:</strong> 위 문제는 모두 캔버스와 관련된 문제입니다.
+                보통 캔버스에서 문제가 생기면 내부도 같이 망가지기 때문에 각별히 주의해야 한다는 교훈을 몸으로 체득할 수 있었습니다.</p>
+            <p style="margin-top: 24px;">그러나 아픔만이 배움의 전부는 아닙니다.
+                주변 사람들에게 게임을 경험시키고 피드백을 받는 일련의 과정에서 소중한 경험을 얻었습니다.
+                사람들은 게임이라고 부르기도 초라한 것을 진중하게 임하고, 때로는 즐겼습니다.
+                그 모습이 곧 제 안에서 커다란 원동력으로 변했습니다. 이는 스스로 즐기고 만족하던 감정의 곱절로도 못 미치는 가치라고 생각합니다.</p>
+            <p style="margin-top: 24px;">부트캠프 대상은 보이지 않는 감상과 경험에 관한 결과로서의 발로입니다.
+                다만 이것은 우연이 겹쳐 발생한 요행으로, 온전한 성과라고 할 수 없습니다.
+                그러니 정진함으로써 매 순간 증명하고 보답하는 것이 앞으로의 과제일 것입니다.
+            </p>
         </section>
 
         <footer>
